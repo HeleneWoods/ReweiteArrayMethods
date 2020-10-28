@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<div id="data" style="display: none;">
+    [ { "id": "1", "name": "bob", "desc": "a man", "age": "18" }, { "id": "2", "name": "mary", "desc": "a women", "age": "26" }, { "id": "3", "name": "jack", "desc": "a handsome man", "age": "38" }, { "id": "4", "name": "rose", "desc": "a beautiful man",
+    "age": "16" }, { "id": "5", "name": "joey", "desc": "a funny man", "age": "20" }, { "id": "6", "name": "helene", "desc": "a good man", "age": "27" } ]
+</div>
+
+<body>
+    <script>
+        var data = JSON.parse(document.getElementById("data").innerHTML);
+        var oLi = document.getElementsByTagName('li');
+        var fn = function(prev, elem) {
+            prev.push(elem.name);
+            // console.log(this);
+            return prev;
+        };
+        // console.log(data);
+        Array.prototype.myReduce = function(fn, initialVal) {
+            var arr = this;
+            var len = arr.length;
+            // 该变量的值或者是回调函数的第二个参数，或者是window
+            var arg2 = arguments[2] || window;
+            for (var i = 0; i < len; i++) {
+                initialVal = fn.apply(arg2, [initialVal, arr[i], i, arr]);
+            }
+            return initialVal;
+        }
+        var newArr = data.myReduce(fn, [], {
+            name: 'test'
+        });
+
+        Array.prototype.myReduceRight = function(fn, initialVal) {
+            var arr = this;
+            var len = arr.length;
+            // 该变量的值或者是回调函数的第二个参数，或者是window
+            var arg2 = arguments[2] || window;
+            for (var i = len - 1; i >= 0; i--) {
+                initialVal = fn.apply(arg2, [initialVal, arr[i], i, arr]);
+            }
+            return initialVal;
+        }
+        var newArr2 = data.myReduceRight(fn, []);
+    </script>
+</body>
+
+</html>
