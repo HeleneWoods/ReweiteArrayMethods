@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<div id="data" style="display: none;">
+    [ { "id": "1", "name": "bob", "desc": "a man", "age": "18" }, { "id": "2", "name": "mary", "desc": "a women", "age": "26" }, { "id": "3", "name": "jack", "desc": "a handsome man", "age": "38" }, { "id": "4", "name": "rose", "desc": "a beautiful man",
+    "age": "16" }, { "id": "5", "name": "joey", "desc": "a funny man", "age": "20" }, { "id": "6", "name": "helene", "desc": "a good man", "age": "27" } ]
+</div>
+
+<body>
+    <script>
+        var data = JSON.parse(document.getElementById("data").innerHTML);
+        var oLi = document.getElementsByTagName('li');
+        var fn = function(el, index, array) {
+            // console.log(this);
+            return el.age > 20;
+        };
+        Array.prototype.myEvery = function(fn) {
+            var arr = this;
+            var len = arr.length;
+            // 该变量的值或者是回调函数的第二个参数，或者是window
+            var arg2 = arguments[1] || window;
+            var res = true;
+            for (var i = 0; i < len; i++) {
+                if (!fn.apply(arg2, [arr[i], i, arr])) {
+                    res = false;
+                    break;
+                }
+            }
+            return res;
+        }
+        var res = data.myEvery(fn, {
+            name: 'test'
+        });
+        var res2 = data.every(fn);
+
+        Array.prototype.mySome = function(fn) {
+            var arr = this;
+            var len = arr.length;
+            // 该变量的值或者是回调函数的第二个参数，或者是window
+            var arg2 = arguments[1] || window;
+            var res = false;
+            for (var i = 0; i < len; i++) {
+                if (fn.apply(arg2, [arr[i], i, arr])) {
+                    res = true;
+                    break;
+                }
+            }
+            return res;
+        }
+        var res3 = data.mySome(fn);
+        var res4 = data.some(fn);
+    </script>
+</body>
+
+</html>
